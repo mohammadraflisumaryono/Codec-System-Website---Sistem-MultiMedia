@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Codec System</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="title">Codec System</h1>
+        <p class="subtitle">Transform your media with customizable compression</p>
+        <div class="input-group">
+            <div class="select-wrapper">
+                <select id="mediaType">
+                    <option value="image">Image (JPEG/PNG)</option>
+                    <option value="audio">Audio (MP3/WAV)</option>
+                    <option value="video">Video (MP4)</option>
+                </select>
+            </div>
+            <div class="select-wrapper">
+                <select id="action" onchange="toggleCompressionLevel()">
+                    <option value="compress">Compress</option>
+                    <option value="decompress">Decompress</option>
+                </select>
+            </div>
+            <div class="select-wrapper" id="compressionLevelWrapper">
+                <select id="compressionLevel">
+                    <option value="very_small">Very Small</option>
+                    <option value="medium" selected>Medium</option>
+                    <option value="small">Small</option>
+                </select>
+            </div>
+            <label class="file-input-label">
+                <input type="file" id="fileInput" accept="image/*,audio/*,video/*">
+                <span>Choose File</span>
+            </label>
+            <button onclick="processFile()">Process</button>
+        </div>
+        <div id="progress" class="progress hidden">
+            <div class="progress-bar"></div>
+        </div>
+        <div id="preview" class="preview"></div>
+        <div id="output" class="output"></div>
+    </div>
+    <div class="background-gradient"></div>
+    <script src="/static/js/script.js"></script>
+</body>
+
+</html>
