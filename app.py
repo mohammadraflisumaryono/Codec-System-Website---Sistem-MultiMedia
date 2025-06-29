@@ -238,6 +238,7 @@ def download_file(filename):
     return response
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get('PORT', 5000))  # Use PORT env var, default to 5000 for local
+    app.run(host='0.0.0.0', port=port, debug=True)
 else:
     app = app  # For Gunicorn compatibility
