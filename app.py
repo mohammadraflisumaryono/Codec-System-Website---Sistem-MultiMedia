@@ -1,9 +1,10 @@
 import os
 from flask import Flask, request, jsonify, send_file, render_template
 from PIL import Image
+import numpy as np
+from werkzeug.utils import secure_filename
 import pydub
 import moviepy.editor as mp
-from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 
@@ -22,6 +23,87 @@ ALLOWED_EXTENSIONS = {
 def allowed_file(filename, media_type):
     extension = filename.rsplit('.', 1)[1].lower()
     return extension in ALLOWED_EXTENSIONS[media_type]
+
+# Fungsi Steganografi LSB
+def embed_message(image_path, message, output_path):
+    try:
+        img = Image.open(image_path)
+        if img.mode != 'RGB':
+            img = img.convert('RGB')
+        img_array = np.array(img)
+        h, w, _ = img_array.shape
+
+        # Konversi pesan ke biner
+        message += '###'  # Penanda akhir
+        binary_message = ''.join(format(ord(c), '08b') for c in message)
+
+        # Cek kapasitas
+        max_bits = h * w * 3  # 3 bit per piksel (R, G, B)
+        if len(binary_message) > max_bits:
+            return False, f"Image too small. Max characters: {max_bits // 8 - 3}"
+
+        # Sisipkan pesan ke LSB
+        msg_idx = 0
+        for i in range(h):
+            for j in range(w):
+                for c in range(3):  # R, G, B
+                    if msg_idx < len(binary_message):
+                        pixel = img_array[i, j, c]
+                        pixel = (pixel & ~1) | int(binary_message[msg_idx])
+                        img_array[i, j, c] = pixel
+                        msg_idx += 1
+                    else:
+                        break
+                if msg_idx >= len(binary_message):
+                    break
+            if msg_idx >= len(binary_message):
+                break
+
+        # Simpan gambar
+        Image.fromarray(img_array).save(output_path, format="PNG")
+        return True, "Message embedded successfully"
+    except Exception as e:
+        return False, f"Error embedding message: {str(e)}"
+
+def extract_message(image_path):
+    try:
+        img = Image.open(image_path)
+        if img.mode != 'RGB':
+            img = img.convert('RGB')
+        img_array = np.array(img)
+        h, w, _ = img_array.shape
+
+        binary_message = ""
+        max_bits = h * w * 3
+        for i in range(h):
+            for j in range(w):
+                for c in range(3):
+                    if len(binary_message) < max_bits:
+                        pixel = img_array[i, j, c]
+                        binary_message += str(pixel & 1)
+                    else:
+                        break
+                if len(binary_message) >= max_bits:
+                    break
+            if len(binary_message) >= max_bits:
+                break
+
+        # Konversi biner ke teks
+        message = ""
+        for i in range(0, len(binary_message), 8):
+            byte = binary_message[i:i+8]
+            if len(byte) < 8:
+                break
+            char_code = int(byte, 2)
+            if char_code == 0:
+                break
+            message += chr(char_code)
+            if message.endswith('###'):
+                message = message[:-3]
+                return True, message
+        return False, "No message found"
+    except Exception as e:
+        return False, f"Error extracting message: {str(e)}"
 
 def compress_image(input_path, output_path, quality=50):
     try:
@@ -87,6 +169,7 @@ def process_file():
     media_type = request.form.get('media_type')
     action = request.form.get('action')
     compression_level = request.form.get('compression_level', 'medium')
+    message = request.form.get('message', '')
 
     if not file or not media_type or not action:
         return jsonify({'error': 'Missing required parameters'}), 400
@@ -94,11 +177,11 @@ def process_file():
     if media_type not in ['image', 'audio', 'video']:
         return jsonify({'error': 'Invalid media type'}), 400
 
-    if action not in ['compress', 'decompress']:
+    if action not in ['compress', 'decompress', 'embed', 'extract']:
         return jsonify({'error': 'Invalid action'}), 400
 
-    if not allowed_file(file.filename, media_type):
-        return jsonify({'error': 'File type not allowed'}), 400
+    if action == 'embed' and not message:
+        return jsonify({'error': 'Message required for embedding'}), 400
 
     filename = secure_filename(file.filename)
     input_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
@@ -106,7 +189,7 @@ def process_file():
 
     base_name = os.path.splitext(filename)[0]
     ext = 'jpg' if media_type == 'image' and action == 'compress' else \
-          'png' if media_type == 'image' and action == 'decompress' else \
+          'png' if media_type == 'image' and action in ['decompress', 'embed', 'extract'] else \
           'mp3' if media_type == 'audio' and action == 'compress' else \
           'wav' if media_type == 'audio' and action == 'decompress' else \
           'mp4'
@@ -114,7 +197,6 @@ def process_file():
     output_filename = f"{base_name}_{action}ed.{ext}"
     output_path = os.path.join(app.config['UPLOAD_FOLDER'], output_filename)
 
-    # Tentukan parameter berdasarkan tingkat kompresi
     compression_params = {
         'image': {'very_small': 10, 'medium': 50, 'small': 80},
         'audio': {'very_small': '64k', 'medium': '128k', 'small': '256k'},
@@ -122,7 +204,12 @@ def process_file():
     }
 
     processors = {
-        'image': {'compress': compress_image, 'decompress': decompress_image},
+        'image': {
+            'compress': compress_image,
+            'decompress': decompress_image,
+            'embed': lambda ip, op: embed_message(ip, message, op),
+            'extract': lambda ip, op: extract_message(ip)
+        },
         'audio': {'compress': compress_audio, 'decompress': decompress_audio},
         'video': {'compress': compress_video, 'decompress': decompress_video}
     }
@@ -130,17 +217,26 @@ def process_file():
     if action == 'compress':
         param = compression_params[media_type].get(compression_level, compression_params[media_type]['medium'])
         success, message = processors[media_type][action](input_path, output_path, param)
+    elif action in ['embed', 'extract'] and media_type == 'image':
+        success, message = processors[media_type][action](input_path, output_path)
+        if action == 'extract':
+            return jsonify({'message': message, 'file': None})
     else:
         success, message = processors[media_type][action](input_path, output_path)
 
-    if success:
+    if success and action != 'extract':
         return jsonify({'message': message, 'file': f'/download/{output_filename}'})
+    elif success and action == 'extract':
+        return jsonify({'message': message, 'file': None})
     else:
         return jsonify({'error': message}), 500
 
 @app.route('/download/<filename>')
 def download_file(filename):
-    return send_file(os.path.join(app.config['UPLOAD_FOLDER'], filename), as_attachment=True)
+    response = send_file(os.path.join(app.config['UPLOAD_FOLDER'], filename), as_attachment=True)
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    response.headers['Access-Control-Allow-Methods'] = 'GET'
+    return response
 
 if __name__ == '__main__':
     app.run(debug=True)

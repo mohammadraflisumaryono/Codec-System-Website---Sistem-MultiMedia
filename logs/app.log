@@ -1,0 +1,53 @@
+2025-06-29 14:14:32 [INFO] Starting Flask application
+2025-06-29 14:14:32 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-06-29 14:14:32 [INFO] [33mPress CTRL+C to quit[0m
+2025-06-29 14:14:32 [INFO]  * Restarting with stat
+2025-06-29 14:14:36 [INFO] Starting Flask application
+2025-06-29 14:14:36 [WARNING]  * Debugger is active!
+2025-06-29 14:14:36 [INFO]  * Debugger PIN: 141-330-489
+2025-06-29 14:14:59 [INFO] Rendering index page
+2025-06-29 14:14:59 [INFO] 127.0.0.1 - - [29/Jun/2025 14:14:59] "GET / HTTP/1.1" 200 -
+2025-06-29 14:14:59 [INFO] 127.0.0.1 - - [29/Jun/2025 14:14:59] "GET /static/css/style.css HTTP/1.1" 200 -
+2025-06-29 14:15:00 [INFO] 127.0.0.1 - - [29/Jun/2025 14:15:00] "GET /static/js/script.js HTTP/1.1" 200 -
+2025-06-29 14:15:00 [INFO] 127.0.0.1 - - [29/Jun/2025 14:15:00] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-06-29 14:15:27 [INFO] Processing file request
+2025-06-29 14:15:27 [INFO] File saved: output\stego_usecase_1_compressed_1.png
+2025-06-29 14:15:27 [INFO] Image compressed: output\stego_usecase_1_compressed_1.png -> output\stego_usecase_1_compressed_1_compressed.jpg (quality: 50)
+2025-06-29 14:15:27 [INFO] Process successful: Image compressed successfully (quality: 50)
+2025-06-29 14:15:27 [INFO] 127.0.0.1 - - [29/Jun/2025 14:15:27] "POST /process HTTP/1.1" 200 -
+2025-06-29 14:15:27 [INFO] Downloading file: output\stego_usecase_1_compressed_1_compressed.jpg
+2025-06-29 14:15:27 [INFO] 127.0.0.1 - - [29/Jun/2025 14:15:27] "GET /download/stego_usecase_1_compressed_1_compressed.jpg HTTP/1.1" 200 -
+2025-06-29 14:15:30 [INFO] Downloading file: output\stego_usecase_1_compressed_1_compressed.jpg
+2025-06-29 14:15:30 [INFO] 127.0.0.1 - - [29/Jun/2025 14:15:30] "GET /download/stego_usecase_1_compressed_1_compressed.jpg HTTP/1.1" 200 -
+2025-06-29 14:19:43 [INFO]  * Detected change in 'c:\\Users\\fahmi\\Documents\\Rafli\\UIN SGD\\Semester 6\\projectAkhir\\sismul\\app.py', reloading
+2025-06-29 14:19:44 [INFO]  * Restarting with stat
+2025-06-29 14:19:49 [INFO] Starting Flask application
+2025-06-29 14:19:49 [WARNING]  * Debugger is active!
+2025-06-29 14:19:49 [INFO]  * Debugger PIN: 141-330-489
+2025-06-29 14:19:56 [INFO] Rendering index page
+2025-06-29 14:19:56 [INFO] 127.0.0.1 - - [29/Jun/2025 14:19:56] "GET / HTTP/1.1" 200 -
+2025-06-29 14:19:56 [INFO] 127.0.0.1 - - [29/Jun/2025 14:19:56] "GET /static/css/style.css HTTP/1.1" 200 -
+2025-06-29 14:19:56 [INFO] 127.0.0.1 - - [29/Jun/2025 14:19:56] "GET /static/js/script.js HTTP/1.1" 200 -
+2025-06-29 14:26:59 [INFO]  * Detected change in 'c:\\Users\\fahmi\\Documents\\Rafli\\UIN SGD\\Semester 6\\projectAkhir\\sismul\\app.py', reloading
+2025-06-29 14:27:00 [INFO]  * Restarting with stat
+2025-06-29 14:34:48 [INFO] Starting Flask application
+2025-06-29 14:34:48 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-06-29 14:34:48 [INFO] [33mPress CTRL+C to quit[0m
+2025-06-29 14:34:48 [INFO]  * Restarting with stat
+2025-06-29 14:34:53 [INFO] Starting Flask application
+2025-06-29 14:34:53 [WARNING]  * Debugger is active!
+2025-06-29 14:34:53 [INFO]  * Debugger PIN: 141-330-489
+2025-06-29 14:34:57 [INFO] Rendering index page
+2025-06-29 14:34:57 [INFO] 127.0.0.1 - - [29/Jun/2025 14:34:57] "GET / HTTP/1.1" 200 -
+2025-06-29 14:34:57 [INFO] 127.0.0.1 - - [29/Jun/2025 14:34:57] "GET /static/css/style.css HTTP/1.1" 200 -
+2025-06-29 14:34:57 [INFO] 127.0.0.1 - - [29/Jun/2025 14:34:57] "GET /static/js/script.js HTTP/1.1" 200 -
+2025-06-29 14:35:57 [INFO] Rendering index page
+2025-06-29 14:35:57 [INFO] 127.0.0.1 - - [29/Jun/2025 14:35:57] "GET / HTTP/1.1" 200 -
+2025-06-29 14:35:57 [INFO] 127.0.0.1 - - [29/Jun/2025 14:35:57] "GET /static/css/style.css HTTP/1.1" 200 -
+2025-06-29 14:35:57 [INFO] 127.0.0.1 - - [29/Jun/2025 14:35:57] "GET /static/js/script.js HTTP/1.1" 200 -
+2025-06-29 14:36:52 [INFO]  * Detected change in 'c:\\Users\\fahmi\\Documents\\Rafli\\UIN SGD\\Semester 6\\projectAkhir\\sismul\\app.py', reloading
+2025-06-29 14:36:52 [INFO]  * Restarting with stat
+2025-06-29 14:41:48 [INFO]  * Restarting with stat
+2025-06-29 15:05:34 [INFO]  * Restarting with stat

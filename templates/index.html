@@ -4,18 +4,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Codec System</title>
+    <title>Codec & Steganography System</title>
     <link rel="stylesheet" href="/static/css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
     <div class="container">
-        <h1 class="title">Codec System</h1>
-        <p class="subtitle">Transform your media with customizable compression</p>
+        <h1 class="title">Codec & Steganography System</h1>
+        <p class="subtitle">Transform your media or hide messages in images with LSB steganography</p>
         <div class="input-group">
             <div class="select-wrapper">
-                <select id="mediaType">
+                <select id="mediaType" onchange="toggleOptions()">
                     <option value="image">Image (JPEG/PNG)</option>
                     <option value="audio">Audio (MP3/WAV)</option>
                     <option value="video">Video (MP4)</option>
@@ -25,6 +25,8 @@
                 <select id="action" onchange="toggleCompressionLevel()">
                     <option value="compress">Compress</option>
                     <option value="decompress">Decompress</option>
+                    <option value="embed">Embed Message</option>
+                    <option value="extract">Extract Message</option>
                 </select>
             </div>
             <div class="select-wrapper" id="compressionLevelWrapper">
@@ -33,6 +35,9 @@
                     <option value="medium" selected>Medium</option>
                     <option value="small">Small</option>
                 </select>
+            </div>
+            <div class="input-wrapper" id="messageWrapper">
+                <input type="text" id="messageInput" placeholder="Enter message to embed">
             </div>
             <label class="file-input-label">
                 <input type="file" id="fileInput" accept="image/*,audio/*,video/*">
@@ -43,7 +48,16 @@
         <div id="progress" class="progress hidden">
             <div class="progress-bar"></div>
         </div>
-        <div id="preview" class="preview"></div>
+        <div class="preview-container">
+            <div class="preview-section">
+                <h3>Input Preview</h3>
+                <div id="inputPreview" class="preview"></div>
+            </div>
+            <div class="preview-section">
+                <h3>Output Preview</h3>
+                <div id="outputPreview" class="preview"></div>
+            </div>
+        </div>
         <div id="output" class="output"></div>
     </div>
     <div class="background-gradient"></div>
