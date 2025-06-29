@@ -8,10 +8,8 @@ import moviepy.editor as mp
 
 app = Flask(__name__)
 
-# Konfigurasi folder output
-UPLOAD_FOLDER = 'output'
-if not os.path.exists(UPLOAD_FOLDER):
-    os.makedirs(UPLOAD_FOLDER)
+# Use /tmp for Railway's ephemeral filesystem
+UPLOAD_FOLDER = '/tmp'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 ALLOWED_EXTENSIONS = {
@@ -24,7 +22,7 @@ def allowed_file(filename, media_type):
     extension = filename.rsplit('.', 1)[1].lower()
     return extension in ALLOWED_EXTENSIONS[media_type]
 
-# Fungsi Steganografi LSB
+# LSB Steganography: Embed Message
 def embed_message(image_path, message, output_path):
     try:
         img = Image.open(image_path)
@@ -33,20 +31,20 @@ def embed_message(image_path, message, output_path):
         img_array = np.array(img)
         h, w, _ = img_array.shape
 
-        # Konversi pesan ke biner
-        message += '###'  # Penanda akhir
+        # Convert message to binary with end marker
+        message += '###'
         binary_message = ''.join(format(ord(c), '08b') for c in message)
 
-        # Cek kapasitas
-        max_bits = h * w * 3  # 3 bit per piksel (R, G, B)
+        # Check capacity
+        max_bits = h * w * 3
         if len(binary_message) > max_bits:
             return False, f"Image too small. Max characters: {max_bits // 8 - 3}"
 
-        # Sisipkan pesan ke LSB
+        # Embed message in LSB
         msg_idx = 0
         for i in range(h):
             for j in range(w):
-                for c in range(3):  # R, G, B
+                for c in range(3):
                     if msg_idx < len(binary_message):
                         pixel = img_array[i, j, c]
                         pixel = (pixel & ~1) | int(binary_message[msg_idx])
@@ -59,12 +57,13 @@ def embed_message(image_path, message, output_path):
             if msg_idx >= len(binary_message):
                 break
 
-        # Simpan gambar
+        # Save image as PNG
         Image.fromarray(img_array).save(output_path, format="PNG")
         return True, "Message embedded successfully"
     except Exception as e:
         return False, f"Error embedding message: {str(e)}"
 
+# LSB Steganography: Extract Message
 def extract_message(image_path):
     try:
         img = Image.open(image_path)
@@ -88,7 +87,7 @@ def extract_message(image_path):
             if len(binary_message) >= max_bits:
                 break
 
-        # Konversi biner ke teks
+        # Convert binary to text
         message = ""
         for i in range(0, len(binary_message), 8):
             byte = binary_message[i:i+8]
@@ -233,10 +232,12 @@ def process_file():
 
 @app.route('/download/<filename>')
 def download_file(filename):
-    response = send_file(os.path.join(app.config['UPLOAD_FOLDER'], filename), as_attachment=True)
+    response = send_file(os.path.join('/tmp', filename), as_attachment=True)
     response.headers['Access-Control-Allow-Origin'] = '*'
     response.headers['Access-Control-Allow-Methods'] = 'GET'
     return response
 
 if __name__ == '__main__':
     app.run(debug=True)
+else:
+    app = app  # For Gunicorn compatibility

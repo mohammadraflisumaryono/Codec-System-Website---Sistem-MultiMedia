@@ -134,7 +134,6 @@ async function sendFile(file, mediaType, action, compressionLevel, message, outp
             } else {
                 output.innerHTML = `<p>${result.message}</p><a href="${result.file}" download>Download Result</a>`;
                 if (mediaType === 'image' && result.file) {
-                    // Retry fetch with delay to ensure file is ready
                     setTimeout(async () => {
                         try {
                             const outputFile = await fetch(result.file);

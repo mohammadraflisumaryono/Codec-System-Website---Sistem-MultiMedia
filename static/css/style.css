@@ -232,7 +232,7 @@ button:hover {
 }
 
 .preview img, .preview video, .preview audio {
-    max-width: 200px; /* Ukuran pratinjau lebih kecil */
+    max-width: 200px;
     border-radius: 10px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
