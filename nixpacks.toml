@@ -1,8 +1,8 @@
 [phases.setup]
-nixPkgs = ['python-3.12', 'ffmpeg']
+nixPkgs = ['python3.12', 'ffmpeg']
 
 [phases.build]
 cmd = 'pip install -r requirements.txt'
 
 [start]
-cmd = 'gunicorn --chdir api app:app'
+cmd = 'gunicorn --chdir  app:app'
