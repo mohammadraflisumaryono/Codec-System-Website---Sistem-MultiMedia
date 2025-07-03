@@ -8,6 +8,23 @@ Aplikasi berbasis web untuk mengompresi, mendekompresi file **gambar**, **audio*
 
 ## Deskripsi
 
+**Tugas Akhir Mata Kuliah Sistem Multimedia**  
+_Universitas Islam Negeri Sunan Gunung Djati Bandung_  
+_Semester 6 - Tahun Akademik 2024/2025_
+
+**Anggota Tim:**
+
+- ISMAIL MUHAMMAD AHMADI (1227050062)
+- MOHAMMAD RAFLI SUMARYONO (1227050076)
+
+**Dosen Pengampu:** Eva Nurlatifah M.Sc.
+**Program Studi:** Teknik Informatika
+**Fakultas:** Sains Dan Teknologi
+
+---
+
+Proyek ini merupakan implementasi sistem codec dan steganografi sebagai penerapan konsep-konsep multimedia yang telah dipelajari dalam mata kuliah Sistem Multimedia. Sistem ini menggabungkan teknik kompresi media (gambar, audio, video) dengan steganografi LSB untuk menyembunyikan informasi rahasia dalam gambar digital.
+
 Sistem Codec & Steganography memungkinkan pengguna untuk memproses file media dan menyembunyikan pesan dalam gambar dengan antarmuka web yang responsif, modern, dan interaktif. Fitur utama meliputi kompresi/dekompresi dengan tingkat kompresi yang dapat disesuaikan, steganografi LSB untuk gambar, pratinjau input dan output yang lebih kecil, serta sorotan visual untuk pesan yang diekstrak. Desain menggunakan gradien biru-ungu, animasi halus, gaya neumorphism pada form input, dan bilah progres untuk pengalaman pengguna yang optimal.
 
 ## Fitur
@@ -110,6 +127,13 @@ codec_steganography/
 
 ## Menjalankan Aplikasi
 
+### Akses Online (Deployed Version)
+
+Aplikasi dapat diakses langsung melalui:
+**🌐 https://codec-system-website-sistem-multimedia-production.up.railway.app/**
+
+### Menjalankan Lokal
+
 1. **Jalankan Server Flask**:
 
    ```bash
@@ -211,7 +235,6 @@ _(Tambahkan tangkapan layar antarmuka di sini jika diunggah ke repositori. Conto
    ```
 5. Buka pull request di repositori.
 
-
 ## Kontak
 
 Untuk pertanyaan, masalah, atau saran, silakan buka isu di repositori atau hubungi pengelola proyek.
@@ -219,24 +242,30 @@ Untuk pertanyaan, masalah, atau saran, silakan buka isu di repositori atau hubun
 ---
 
 ### Penjelasan Perubahan
+
 1. **Judul dan Deskripsi**:
+
    - Diperbarui menjadi "Codec & Steganography System" untuk mencerminkan fitur steganografi LSB.
    - Menyebutkan antarmuka modern dengan neumorphism, pratinjau kecil, dan sorotan pesan yang diekstrak.
 
 2. **Fitur**:
+
    - Menambahkan detail tentang steganografi LSB (embedding dan ekstraksi).
    - Menyebutkan pratinjau input/output yang lebih kecil (200px) dan sorotan visual untuk pesan yang diekstrak.
    - Menyoroti desain dropdown/input dengan gaya neumorphism dan animasi.
 
 3. **Struktur Proyek**:
+
    - Diperbarui untuk mencerminkan struktur folder yang sama dengan kode terbaru.
 
 4. **Cara Penggunaan**:
+
    - Menambahkan langkah untuk steganografi (embed dan extract).
    - Menyebutkan pratinjau input/output dan sorotan pesan yang diekstrak.
    - Memperjelas validasi kapasitas pesan untuk embedding.
 
 5. **Detail Kompresi dan Steganografi**:
+
    - Menambahkan baris untuk `Embed` dan `Extract` pada tabel, dengan detail parameter LSB.
    - Mempertahankan detail kompresi/dekompresi dari versi sebelumnya.
 
@@ -245,6 +274,7 @@ Untuk pertanyaan, masalah, atau saran, silakan buka isu di repositori atau hubun
    - Menyebutkan langkah debugging untuk masalah pratinjau output.
 
 ### Catatan Tambahan
+
 - **Pratinjau Output**: Jika masih ada masalah dengan pratinjau output, pastikan folder `output` memiliki izin tulis dan file tersimpan dengan benar. Periksa konsol browser (F12) untuk error seperti "Failed to load preview".
 - **Ukuran Gambar untuk Steganografi**: Gunakan gambar minimal 512x512 piksel untuk pesan pendek (misalnya, "Test123"). Kapasitas dihitung di frontend dan backend untuk mencegah error.
 - **Debugging**: Jalankan aplikasi dengan `debug=True` untuk log server. Jika pesan tidak terekstrak, pastikan gambar yang diunggah adalah PNG hasil embedding.
